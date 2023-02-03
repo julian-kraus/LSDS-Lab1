@@ -34,29 +34,6 @@ public class SimplifiedTweet {
         }
 
 
-    // any other method that might be of use (think of a typical Java Object)
-
-    // getters for each class member
-    public long getTweetId() {
-        return tweetId;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public long getTimestampMs() {
-        return timestampMs;
-    }
-
     /**
     * Returns a {@link SimplifiedTweet} from a JSON String.
     * If parsing fails, for any reason, return an {@link Optional#empty()}
@@ -75,31 +52,31 @@ public class SimplifiedTweet {
           Optional <JsonElement> opt_je = Optional.ofNullable(je);
           JsonObject  jo = opt_je.get().getAsJsonObject();
           
-          if(jo.has("user")){
+          if(jo.has("id") &&
+           jo.has("user") &&
+           jo.has("text") &&
+           jo.has("lang") && 
+           jo.has("timestamp_ms")){
             JsonObject userObj = jo.getAsJsonObject("user");
-            if(userObj.has("id") && userObj.has("id") && userObj.has("name") && userObj.has("text") && userObj.has("lang") && userObj.has("timestamp_ms")){
-              Long userId = userObj.get("id").getAsLong();
-              Long tweetId = jo.get("id").getAsLong();
-              String userName = userObj.get("name").getAsString();
-              String text= jo.get("text").getAsString();
-              String lang = jo.get("lang").getAsString();
-              Long timeStamp = jo.get("timestamp_ms").getAsLong();
-    
+            Long tweetId = jo.get("id").getAsLong();
+            String text= jo.get("text").getAsString();
+            Long timeStamp = jo.get("timestamp_ms").getAsLong();
+            String lang = jo.get("lang").getAsString();
+            if(
+              userObj.has("id") && 
+              userObj.has("name")
+              ){
+                Long userId = userObj.get("id").getAsLong();
+                String userName = userObj.get("name").getAsString();    
               tweet = new SimplifiedTweet(tweetId, text, userId, userName, lang, timeStamp);
-            } else {
-              return Optional.empty();
+              return Optional.ofNullable(tweet);
             }
-          }else{
-              return Optional.empty();
           }
-          return Optional.ofNullable(tweet);
-    
-        }catch(Exception e){
+          return Optional.empty();
+          } catch(Exception e){
           return Optional.empty();
         }
-    
       }
-
 
     public String getLanguage() {
         return this.language;
