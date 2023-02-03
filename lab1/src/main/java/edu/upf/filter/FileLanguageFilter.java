@@ -1,17 +1,13 @@
 package edu.upf.filter;
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 
-import java.io.FileReader;
-import java.io.FileWriter;
+import com.google.gson.Gson;
+import edu.upf.parser.SimplifiedTweet;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.Reader;
-
-import edu.upf.parser.*;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.Optional;
-import java.util.Scanner;
 
 
 public class FileLanguageFilter {
@@ -41,7 +37,7 @@ public class FileLanguageFilter {
                 Optional<SimplifiedTweet> tweet = SimplifiedTweet.fromJson(line);
                 // if tweet not empty and correct language add it to lTweets
                 if (tweet.isPresent() && tweet.get().getLanguage().equals(language)) {
-                    gson.toJson(tweet, bw); // write
+                    gson.toJson(tweet.get(), bw); // write
                 }
             } 
             
