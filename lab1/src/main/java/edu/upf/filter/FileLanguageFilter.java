@@ -38,6 +38,7 @@ public class FileLanguageFilter {
                 // if tweet not empty and correct language add it to lTweets
                 if (tweet.isPresent() && tweet.get().getLanguage().equals(language)) {
                     gson.toJson(tweet.get(), bw); // write
+                    bw.newLine();
                 }
             } 
             

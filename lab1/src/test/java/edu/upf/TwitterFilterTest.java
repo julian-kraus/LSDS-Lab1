@@ -1,14 +1,15 @@
 package edu.upf;
 
+
 import org.junit.Test;
+
 
 import edu.upf.parser.SimplifiedTweet;
 
 import static org.junit.Assert.*;
 
+import java.io.*;
 import java.util.Optional;
-
-import java.io.IOException;
 
 /**
  * Unit test for simple App.
@@ -61,9 +62,9 @@ public class TwitterFilterTest
     }
 
     @Test
-    public void shouldReturnWrongJsonString() throws IOException
+    public void TestWrongJsonString() throws IOException
     {
-        String hello2 = "{\"user\": 1,\"id\": 1,\"name\":,\"text\":\"hello world\",\"lang\":\"es\",\"timestamp_ms\":15}";
+        String hello2 = "{\"user\": 1,\"id\": 1,\"name\":\"text\":\"hello world\",\"lang\":\"es\",\"timestamp_ms\":15}"; // Doesn't have andything for name
         Optional<SimplifiedTweet> tweet2 = SimplifiedTweet.fromJson(hello2);
         // OK?         
         // assertE
@@ -71,7 +72,7 @@ public class TwitterFilterTest
     }
 
     @Test
-    public void shouldReturnSomethingMissing() throws IOException
+    public void TestSomethingMissing() throws IOException
     {
         String hello2 = "{\"user\": 1,\"name\":\"test\",\"text\":,\"lang\":\"es\",\"timestamp_ms\":15}";
         // Give valid Json String
@@ -91,7 +92,6 @@ public class TwitterFilterTest
         // assertE
         assertEquals("testSomethingHasTheWrongFormat WORKS!", Optional.empty(), tweet2);
     }
-
     
     @Test
     public void testToString() 
