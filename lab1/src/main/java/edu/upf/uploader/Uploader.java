@@ -1,6 +1,7 @@
 package edu.upf.uploader;
 
 import java.util.List;
+import java.io.IOException;
 
 public interface Uploader {
 
