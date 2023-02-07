@@ -16,36 +16,34 @@ public class S3Uploader implements Uploader {
 
     private final String bucket;
     private final String prefix; 
-    private final String profile; 
+    private AmazonS3 client; 
 
     // constructor 
-    public S3Uploader(String bucket, String prefix, String profile) {
+    public S3Uploader(String bucket, String prefix, String credentials) {
         this.bucket = bucket;
         this.prefix = prefix;
-        this.profile = profile;
+        this.client = AmazonS3ClientBuilder.standard().withCredentials(new ProfileCredentialsProvider(credentials))
+        .withRegion(Regions.US_EAST_1).build();
     }
 
 
     @Override
     public void upload(List<String> files) {
-        Regions clientRegion = Regions.DEFAULT_REGION;
         for (int i = 0; i < files.size(); i++) {
             try {
                 String f = files.get(i);
-                AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
-                        .withRegion(clientRegion)
-                        .build();
+
 
                 // Checking if bucket exists
-                if(s3Client.doesBucketExistV2(bucket)) {
+                if(client.doesBucketExistV2(bucket)) {
                     
                     // sample.bucket/some/prefix/file1
                     PutObjectRequest request = new PutObjectRequest(this.bucket, prefix, new File(f));
                     // Upload
-                    s3Client.putObject(request);
+                    client.putObject(request);
                 } else {
                     // Bucket does not exist
-                    throw new AmazonClientException("Bucket " + bucket + " doesn't exits!!");
+                    throw new AmazonClientException("Bucket " + bucket + " doesn't exits");
                 }
 
             } catch (AmazonClientException e) {
