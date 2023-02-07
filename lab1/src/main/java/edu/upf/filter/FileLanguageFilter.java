@@ -28,7 +28,7 @@ public class FileLanguageFilter {
             
             // initialization
             String line;  
-            BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile)); // where we will write the accepted (line by line)
+            BufferedWriter bw = new BufferedWriter(new FileWriter(outputFile, true)); // where we will write the accepted (line by line)
             
             // List<SimplifiedTweet> lTweets = Files.lines(Paths.get(fileName))).forEach(l -> SimplifiedTweet.fromJson(s)).filter(t -> t.isPresent() && t.get().getLanguage().equals(language).collect(Collectors.toList());
             while ((line = br.readLine()) != null)  // while not end string character 
