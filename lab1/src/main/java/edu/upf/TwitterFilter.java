@@ -9,6 +9,7 @@ import java.util.List;
 
 public class TwitterFilter {
     public static void main( String[] args ) throws Exception {
+        long startTime = System.nanoTime();
         List<String> argsList = Arrays.asList(args);
         String language = argsList.get(0);
         String outputFile = argsList.get(1);
@@ -20,7 +21,20 @@ public class TwitterFilter {
             filter.filterLanguage(language);
         }
 
-        //final S3Uploader uploader = new S3Uploader(bucket, "prefix", "upf");
-        //uploader.upload(Arrays.asList(outputFile));
+        final S3Uploader uploader = new S3Uploader(bucket, "prefix", "upf");
+        uploader.upload(Arrays.asList(outputFile));
+        System.out.println(System.nanoTime()-startTime);
+        /*
+        long start = System.nanoTime()
+        S3Waiter waiter = client.waiter();
+        HeadObjectRequest requestWait = HeadObjectRequest.builder().bucket(bucketName).key(key).build();
+
+        WaiterResponse<HeadObjectResponse> waiterResponse = waiter.waitUntilObjectExists(requestWait);
+
+        waiterResponse.matched().response().ifPresent(System.out.println(System.nanoTime()-start));
+
+         */
+
+
     }
 }
