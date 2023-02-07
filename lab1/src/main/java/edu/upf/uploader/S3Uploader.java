@@ -38,7 +38,7 @@ public class S3Uploader implements Uploader {
                 if(client.doesBucketExistV2(bucket)) {
                     
                     // sample.bucket/some/prefix/file1
-                    PutObjectRequest request = new PutObjectRequest(this.bucket, prefix + "/es", new File(f));
+                    PutObjectRequest request = new PutObjectRequest(this.bucket, prefix, new File(f));
                     // Upload
                     client.putObject(request);
                 } else {

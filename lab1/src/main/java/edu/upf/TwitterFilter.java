@@ -4,6 +4,9 @@ import edu.upf.filter.FileLanguageFilter;
 import edu.upf.uploader.S3Uploader;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,19 +24,14 @@ public class TwitterFilter {
             filter.filterLanguage(language);
         }
 
-        final S3Uploader uploader = new S3Uploader(bucket, "prefix", "upf");
+        final S3Uploader uploader = new S3Uploader(bucket, "en" +
+                "", "upf");
         uploader.upload(Arrays.asList(outputFile));
+        Path path = Paths.get(outputFile);
+        long lines = 0;
+        lines= Files.lines(path).parallel().count();
+        System.out.println(lines + "lines are in this outputfile.");
         System.out.println(System.nanoTime()-startTime);
-        /*
-        long start = System.nanoTime()
-        S3Waiter waiter = client.waiter();
-        HeadObjectRequest requestWait = HeadObjectRequest.builder().bucket(bucketName).key(key).build();
-
-        WaiterResponse<HeadObjectResponse> waiterResponse = waiter.waitUntilObjectExists(requestWait);
-
-        waiterResponse.matched().response().ifPresent(System.out.println(System.nanoTime()-start));
-
-         */
 
 
     }
